@@ -104,7 +104,7 @@ export default function Hero() {
                 className="border border-[#00ff41]/30 text-[#00ff41]/60 px-5 py-2 text-sm rounded-sm hover:border-[#00ff41]/50 hover:text-tgreen transition-all cursor-pointer">
                 [ get in touch ]
               </a>
-              <a href="/resume.pdf" target="_blank"
+              <a href="/resume.pdf" download="Aditya_Suryawanshi_Resume.pdf" target="_blank"
                 className="border border-[#00ff41]/30 text-[#00ff41]/60 px-5 py-2 text-sm rounded-sm hover:border-[#00ff41]/50 hover:text-tgreen transition-all cursor-pointer">
                 [ download resume ]
               </a>
