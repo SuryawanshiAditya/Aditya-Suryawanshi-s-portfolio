@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://aditya-suryawanshis-portfolio.vercel.app',
+    'https://adityasuryawanshisportfolio.vercel.app',
     'https://aditya-suryawanshi-s-portfolio.vercel.app',
     process.env.FRONTEND_URL
   ],
