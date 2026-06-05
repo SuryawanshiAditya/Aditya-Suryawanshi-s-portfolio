@@ -25,7 +25,7 @@ export default function Contact() {
 
     setStatus('loading')
     try {
-      await axios.post(`https://aditya-suryawanshi-s-portfolio.onrender.com/api/contact`, form)
+      await axios.post('https://aditya-suryawanshi-s-portfolio.onrender.com/api/contact', form)
       setStatus('success')
       setForm({ name: '', email: '', message: '' })
       setTimeout(() => setStatus('idle'), 4000)
