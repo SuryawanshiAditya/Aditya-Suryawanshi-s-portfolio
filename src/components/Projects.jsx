@@ -6,8 +6,8 @@ const projects = [
     name: 'Portfolio',
     desc: 'Personal developer portfolio.',
     stack: ['React', 'Tailwind CSS', 'Framer Motion'],
-    github: '#',
-    live: '#',
+    github: 'https://github.com/SuryawanshiAditya/Aditya-Suryawanshi-s-portfolio',
+    live: 'https://aditya-suryawanshi-s-portfolio.vercel.app/',
     status: 'live'
   },
   {

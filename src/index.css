@@ -4,8 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
-* { scroll-behavior: smooth; }
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
 
-::-webkit-scrollbar { width: 6px; }
+body {
+  background-color: #0a0a0a;
+  color: #00ff41;
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* Fix section spacing on mobile */
+section {
+  scroll-margin-top: 56px;
+}
+
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #0a0a0a; }
 ::-webkit-scrollbar-thumb { background: #007a1f; border-radius: 3px; }
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
