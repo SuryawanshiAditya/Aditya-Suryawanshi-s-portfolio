@@ -28,9 +28,9 @@ app.post("/api/contact", async (req, res) => {
       body: JSON.stringify({
         sender: {
           name: "Portfolio Contact",
-          email: "Suryawanshiadityaj@gmail.com",
+          email: "suryawanshiadityaj@gmail.com",
         },
-        to: [{ email: "Suryawanshiadityaj@gmail.com", name: "Aditya" }],
+        to: [{ email: "suryawanshiadityaj@gmail.com", name: "Aditya" }],
         replyTo: { email: email, name: name },
         subject: `New message from ${name} — Portfolio`,
         htmlContent: `
