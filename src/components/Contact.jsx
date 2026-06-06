@@ -17,23 +17,33 @@ export default function Contact() {
   }
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.message) {
-      setStatus('error')
-      setTimeout(() => setStatus('idle'), 3000)
-      return
-    }
+  if (!form.name || !form.email || !form.message) {
+    setStatus('error')
+    setTimeout(() => setStatus('idle'), 3000)
+    return
+  }
 
-    setStatus('loading')
-    try {
-      await axios.post('https://aditya-suryawanshi-s-portfolio.onrender.com/api/contact', form)
+  setStatus('loading')
+  try {
+    const res = await fetch('https://formspree.io/f/xqeoeywr', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    })
+
+    if (res.ok) {
       setStatus('success')
       setForm({ name: '', email: '', message: '' })
       setTimeout(() => setStatus('idle'), 4000)
-    } catch (err) {
+    } else {
       setStatus('error')
       setTimeout(() => setStatus('idle'), 3000)
     }
+  } catch (err) {
+    setStatus('error')
+    setTimeout(() => setStatus('idle'), 3000)
   }
+}
 
   const btnText = {
     idle: '[ send message ]',
