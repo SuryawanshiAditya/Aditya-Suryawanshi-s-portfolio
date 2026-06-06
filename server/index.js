@@ -1,7 +1,6 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import * as Brevo from '@getbrevo/brevo'
+const express = require('express')
+const cors = require('cors')
+const dotenv = require('dotenv')
 
 dotenv.config()
 
@@ -11,9 +10,6 @@ const PORT = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 
-const apiInstance = new Brevo.TransactionalEmailsApi()
-apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY
-
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body
 
@@ -22,28 +18,41 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    const sendSmtpEmail = new Brevo.SendSmtpEmail()
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': process.env.BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: 'Portfolio Contact', email: 'Suryawanshiadityaj@gmail.com' },
+        to: [{ email: 'Suryawanshiadityaj@gmail.com', name: 'Aditya' }],
+        replyTo: { email: email, name: name },
+        subject: `New message from ${name} — Portfolio`,
+        htmlContent: `
+          <div style="font-family:monospace;background:#0a0a0a;color:#00ff41;padding:32px;border-radius:8px;">
+            <h2 style="color:#00ff41;">New Portfolio Message</h2>
+            <p><strong style="color:#00c832;">Name:</strong> ${name}</p>
+            <p><strong style="color:#00c832;">Email:</strong> ${email}</p>
+            <p><strong style="color:#00c832;">Message:</strong></p>
+            <p style="color:#00c832;border-left:3px solid #00ff41;padding-left:12px;">${message}</p>
+          </div>
+        `
+      })
+    })
 
-    sendSmtpEmail.subject = `New message from ${name} — Portfolio`
-    sendSmtpEmail.htmlContent = `
-      <div style="font-family:monospace; background:#0a0a0a; color:#00ff41; padding:32px; border-radius:8px;">
-        <h2 style="color:#00ff41;">New Portfolio Message</h2>
-        <p><strong style="color:#00c832;">Name:</strong> ${name}</p>
-        <p><strong style="color:#00c832;">Email:</strong> ${email}</p>
-        <p><strong style="color:#00c832;">Message:</strong></p>
-        <p style="color:#00c832; border-left:3px solid #00ff41; padding-left:12px;">${message}</p>
-      </div>
-    `
-    sendSmtpEmail.sender = { name: 'Portfolio Contact', email: 'Suryawanshiadityaj@gmail.com' }
-    sendSmtpEmail.to = [{ email: 'Suryawanshiadityaj@gmail.com', name: 'Aditya' }]
-    sendSmtpEmail.replyTo = { email: email, name: name }
-
-    await apiInstance.sendTransacEmail(sendSmtpEmail)
-    res.status(200).json({ success: true })
+    if (response.ok) {
+      res.status(200).json({ success: true })
+    } else {
+      const err = await response.json()
+      console.error('Brevo error:', err)
+      res.status(500).json({ error: 'Failed to send email' })
+    }
 
   } catch (err) {
-    console.error('Email error:', err)
-    res.status(500).json({ error: 'Failed to send email' })
+    console.error('Server error:', err)
+    res.status(500).json({ error: 'Server error' })
   }
 })
 
@@ -51,10 +60,6 @@ app.get('/', (req, res) => {
   res.json({ status: 'Server running ✅' })
 })
 
-setInterval(() => {
-  console.log('keepalive ping')
-}, 14 * 60 * 1000)
+setInterval(() => console.log('keepalive'), 14 * 60 * 1000)
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
